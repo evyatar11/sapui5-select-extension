@@ -38,17 +38,21 @@ sap.m.Select.extend("sapui5-control-extension-demo.controls.Select", {
 	onBeforeRendering: function() {
 		if (this.getAddValueEnabled()) {
 
-			// create add value item and add it to select
-			var oItem = new sap.ui.core.Item({
-				key: this.ADD_OPTION_KEY,
-				text: this.ADD_OPTION_TEXT
-			});
-			this.insertItem(oItem, 0);
-			
+			// check if "add..." option does not exist yet. if so, create it
+			if (!this.getItemByKey(this.ADD_OPTION_KEY)) {
+				// create add value item and add it to select
+				var oItem = new sap.ui.core.Item({
+					key: this.ADD_OPTION_KEY,
+					text: this.ADD_OPTION_TEXT
+				});
+				this.insertItem(oItem, 0);
+			}
+
 			// if the control is in initial loading, set item index in case there is more than one option
-			// further verifications are not necessary as it will be always new options' creation
-			if (this._bInitialLoading && this.getItems().length > 1) {
+			if (this._bInitialLoading && this.getItems().length > 1) { 
 				this.setSelectedItem(this.getItems()[1]);
+
+				// further verifications are not necessary as it will be always new options' creation
 				this._bInitialLoading = false;
 			}
 		}
